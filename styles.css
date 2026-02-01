@@ -1,0 +1,135 @@
+:root{
+  --bg1:#0b1020;
+  --bg2:#171a2e;
+  --card:#0f1630;
+  --text:#eef1ff;
+  --muted:#a9b0d6;
+  --yes:#36d399;
+  --no:#ff5c7a;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans Arabic", "Noto Naskh Arabic", sans-serif;
+  color:var(--text);
+  min-height:100svh;
+  display:grid;
+  place-items:center;
+  background: radial-gradient(1200px 600px at 20% 10%, #2b2f55 0%, transparent 60%),
+              radial-gradient(900px 500px at 80% 90%, #3a1f3a 0%, transparent 55%),
+              linear-gradient(180deg, var(--bg1), var(--bg2));
+}
+
+.wrap{
+  width:min(720px, 92vw);
+  padding:32px 18px;
+  text-align:center;
+}
+
+.title{
+  margin: 0 0 20px;
+  font-size: clamp(28px, 4vw, 44px);
+  letter-spacing: .5px;
+}
+
+.stage{
+  position: relative;
+  height: 240px;
+  border-radius: 18px;
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.09);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap: 22px;
+  overflow:hidden;
+}
+
+.timer{
+  position:absolute;
+  inset:0;
+  display:grid;
+  place-items:center;
+  background: rgba(0,0,0,0.25);
+  backdrop-filter: blur(4px);
+}
+
+.timer-box{
+  padding: 18px 22px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+}
+
+.timer-label{
+  color: var(--muted);
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+
+.timer-num{
+  font-size: 56px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.btn{
+  border:0;
+  border-radius: 999px;
+  padding: 14px 28px;
+  font-size: 20px;
+  font-weight: 700;
+  cursor:pointer;
+  transition: transform 140ms ease, filter 140ms ease;
+  user-select:none;
+}
+
+.btn:active{ transform: scale(0.98); }
+
+.btn.yes{
+  background: color-mix(in oklab, var(--yes) 92%, white 8%);
+  color:#042316;
+  box-shadow: 0 14px 30px rgba(54, 211, 153, 0.22);
+}
+
+.btn.no{
+  background: color-mix(in oklab, var(--no) 92%, white 8%);
+  color:#2a000a;
+  box-shadow: 0 14px 30px rgba(255, 92, 122, 0.18);
+  position:absolute;
+}
+
+.hint{
+  display:none;
+}
+
+.result{
+  margin-top: 18px;
+}
+
+.hidden{ display:none; }
+
+.yay-card{
+  margin-inline:auto;
+  width:min(520px, 92vw);
+  padding: 18px;
+  border-radius: 18px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.10);
+}
+
+.yay-text{
+  font-size: 40px;
+  font-weight: 900;
+  margin-bottom: 10px;
+}
+
+.yay-gif{
+  width: 100%;
+  height: auto;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.10);
+}
