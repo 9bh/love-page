@@ -8,64 +8,28 @@
 </head>
 <body>
   <main class="wrap">
+    <h1 id="question" class="title">يا الدو تحبينن؟</h1>
 
-    <!-- Gate / شروط البداية -->
-    <section id="gate" class="card">
-      <h1 class="title small">قبل ما نبدأ…</h1>
-      <p class="sub">اختاري واحد من الشروط التالية (أو الاثنين). بعد ما يكتمل الشرط يفتح زر <b>بدأ</b>.</p>
+    <section class="stage" aria-label="اختيار">
+      <button id="yesBtn" class="btn yes" type="button">Yes</button>
+      <button id="noBtn" class="btn no" type="button">No</button>
 
-      <div class="checks">
-        <label class="check">
-          <input id="camCheck" type="checkbox" />
-          <span>فاتحه كام</span>
-        </label>
-        <button id="camBtn" class="btn ghost" type="button">تشغيل الكاميرا</button>
-
-        <label class="check">
-          <input id="recCheck" type="checkbox" />
-          <span>تسجلين فيديو لنفسك (٥ ثواني)</span>
-        </label>
-        <button id="recBtn" class="btn ghost" type="button">تسجيل ٥ ثواني</button>
+      <div id="timer" class="timer hidden" aria-hidden="true">
+        <div class="timer-box">
+          <div class="timer-label">نروح للسؤال اللي بعده خلال</div>
+          <div id="timerNum" class="timer-num">5</div>
+        </div>
       </div>
-
-      <div class="media">
-        <video id="preview" class="preview" autoplay muted playsinline></video>
-        <video id="recording" class="preview hidden" controls playsinline></video>
-      </div>
-
-      <div class="actions">
-        <button id="startBtn" class="btn yes" type="button" disabled>بدأ</button>
-      </div>
-
-      <div id="gateMsg" class="msg" aria-live="polite"></div>
     </section>
 
-    <!-- Quiz -->
-    <section id="quiz" class="hidden">
-      <h1 id="question" class="title">يا الدو تحبينن؟</h1>
-
-      <section class="stage" aria-label="اختيار">
-        <button id="yesBtn" class="btn yes" type="button">Yes</button>
-        <button id="noBtn" class="btn no" type="button">No</button>
-
-        <div id="timer" class="timer hidden" aria-hidden="true">
-          <div class="timer-box">
-            <div class="timer-label">نروح للسؤال اللي بعده خلال</div>
-            <div id="timerNum" class="timer-num">5</div>
-          </div>
-        </div>
-      </section>
-
-      <section id="result" class="result hidden" aria-live="polite">
-        <div class="yay-card">
-          <div id="yayText" class="yay-text">YAY!</div>
-          <img id="yayGif" class="yay-gif" src="assets/yay.gif" alt="Yay dancing" />
-        </div>
-      </section>
-
-      <footer class="hint"></footer>
+    <section id="result" class="result hidden" aria-live="polite">
+      <div class="yay-card">
+        <div id="yayText" class="yay-text">YAY!</div>
+        <img id="yayGif" class="yay-gif" src="assets/yay.gif" alt="Yay dancing" />
+      </div>
     </section>
 
+    <footer class="hint"></footer>
   </main>
 
   <script src="script.js"></script>

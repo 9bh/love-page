@@ -1,102 +1,3 @@
-// --- Gate (pre-start requirements) ---
-const gate = document.getElementById('gate');
-const quiz = document.getElementById('quiz');
-
-const camCheck = document.getElementById('camCheck');
-const recCheck = document.getElementById('recCheck');
-const camBtn = document.getElementById('camBtn');
-const recBtn = document.getElementById('recBtn');
-const startBtn = document.getElementById('startBtn');
-const gateMsg = document.getElementById('gateMsg');
-const preview = document.getElementById('preview');
-const recording = document.getElementById('recording');
-
-let camStream = null;
-let recorder = null;
-let recordedChunks = [];
-
-function setGateMsg(t) {
-  if (gateMsg) gateMsg.textContent = t || '';
-}
-
-function updateStartEnabled() {
-  // يفتح زر بدأ إذا تحقق واحد على الأقل
-  startBtn.disabled = !(camCheck.checked || recCheck.checked);
-}
-
-async function ensureCamera() {
-  if (camStream) return camStream;
-  if (!navigator.mediaDevices?.getUserMedia) {
-    throw new Error('متصفحك ما يدعم الكاميرا');
-  }
-
-  camStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-  preview.srcObject = camStream;
-  return camStream;
-}
-
-camBtn?.addEventListener('click', async () => {
-  try {
-    setGateMsg('…جاري تشغيل الكاميرا');
-    await ensureCamera();
-    camCheck.checked = true;
-    setGateMsg('✅ الكاميرا شغالة');
-    updateStartEnabled();
-  } catch (e) {
-    setGateMsg('❌ ما قدرت أشغّل الكاميرا. تأكدي من السماح.');
-  }
-});
-
-recBtn?.addEventListener('click', async () => {
-  try {
-    setGateMsg('…جاري تجهيز التسجيل');
-    const stream = await ensureCamera();
-
-    recordedChunks = [];
-    const mime = MediaRecorder.isTypeSupported('video/webm;codecs=vp9')
-      ? 'video/webm;codecs=vp9'
-      : 'video/webm';
-
-    recorder = new MediaRecorder(stream, { mimeType: mime });
-    recorder.ondataavailable = (ev) => {
-      if (ev.data && ev.data.size > 0) recordedChunks.push(ev.data);
-    };
-
-    recorder.onstop = () => {
-      const blob = new Blob(recordedChunks, { type: mime });
-      const url = URL.createObjectURL(blob);
-      recording.src = url;
-      recording.classList.remove('hidden');
-      recCheck.checked = true;
-      setGateMsg('✅ تم تسجيل الفيديو');
-      updateStartEnabled();
-    };
-
-    setGateMsg('⏺️ تسجيل ٥ ثواني…');
-    recorder.start();
-    setTimeout(() => {
-      try { recorder.stop(); } catch {}
-    }, 5000);
-  } catch (e) {
-    setGateMsg('❌ ما قدرت أسجّل. تأكدي من السماح للكام/المايك.');
-  }
-});
-
-camCheck?.addEventListener('change', updateStartEnabled);
-recCheck?.addEventListener('change', updateStartEnabled);
-
-startBtn?.addEventListener('click', () => {
-  // حماية: لازم واحد منهم متحقق
-  if (!(camCheck.checked || recCheck.checked)) return;
-
-  gate.classList.add('hidden');
-  quiz.classList.remove('hidden');
-
-  // نبدأ الأسئلة
-  setStep(1);
-});
-
-// --- Quiz (existing) ---
 const stage = document.querySelector('.stage');
 const questionEl = document.getElementById('question');
 const yesBtn = document.getElementById('yesBtn');
@@ -185,25 +86,34 @@ function setStep(n) {
   noBtn.style.transform = '';
 
   // set positions
+  // both buttons are absolute-ish: keep No absolute, Yes is normal unless it needs to run
   noBtn.style.position = 'absolute';
   yesBtn.style.position = step === 2 ? 'absolute' : 'relative';
 
+  // place the escaping button randomly, keep the other centered-ish
   if (step === 1) {
     placeBtnRandom(noBtn);
   } else if (step === 2) {
     placeBtnRandom(yesBtn);
+    // put No near center
     noBtn.style.left = '50%';
     noBtn.style.top = '60%';
     noBtn.style.transform = 'translate(-50%, -50%)';
   } else if (step === 3) {
+    // Ali ثابت بالوسط
     yesBtn.style.left = '';
     yesBtn.style.top = '';
     yesBtn.style.transform = '';
+
+    // حنين تهرب
     placeBtnRandom(noBtn);
   } else if (step === 4) {
+    // علي ثابت بالوسط
     yesBtn.style.left = '';
     yesBtn.style.top = '';
     yesBtn.style.transform = '';
+
+    // فهد يهرب
     placeBtnRandom(noBtn);
   }
 }
@@ -215,8 +125,10 @@ function maybeRunAway(e) {
   const threshold = 110;
 
   if (d < threshold) {
+    // grow the other button a bit every escape
     growScale = clamp(growScale + 0.07, 1, 1.9);
     growTarget.style.transform = `scale(${growScale})`;
+
     placeBtnRandom(escapeTarget);
   }
 }
@@ -252,21 +164,26 @@ function startCountdownThenNextStep(seconds, nextStep) {
 // --- Button actions ---
 yesBtn.addEventListener('click', () => {
   if (step === 1) {
+    // show result card (Q1)
     yayText.textContent = 'ادري';
     yayText.classList.add('bold');
     result.classList.remove('hidden');
 
+    // lock buttons briefly
     yesBtn.disabled = true;
     noBtn.disabled = true;
     noBtn.style.opacity = '0.15';
 
+    // after 5 seconds, show timer + move to step 2
     setTimeout(() => {
       startCountdownThenNextStep(5, 2);
     }, 5000);
   } else if (step === 2) {
+    // In step 2, Yes is the escaping one, but if they somehow click it:
     yayText.textContent = 'ههههه لا';
     result.classList.remove('hidden');
   } else if (step === 3) {
+    // Ali => نروح للسؤال الرابع
     yayText.textContent = 'اللقمي حنين';
     result.classList.remove('hidden');
 
@@ -277,6 +194,7 @@ yesBtn.addEventListener('click', () => {
       startCountdownThenNextStep(5, 4);
     }, 5000);
   } else if (step === 4) {
+    // علي
     yayText.textContent = 'مستوى فهد';
     result.classList.remove('hidden');
     yesBtn.disabled = true;
@@ -286,11 +204,13 @@ yesBtn.addEventListener('click', () => {
 
 noBtn.addEventListener('click', () => {
   if (step === 1) {
+    // if they somehow click it
     placeBtnRandom(noBtn);
     return;
   }
 
   if (step === 2) {
+    // اختار No => نروح للسؤال الثالث
     yayText.textContent = 'تمام ✅';
     result.classList.remove('hidden');
 
@@ -301,9 +221,11 @@ noBtn.addEventListener('click', () => {
       startCountdownThenNextStep(5, 3);
     }, 5000);
   } else if (step === 3) {
+    // لو قدر يضغط حنين (نادر)
     yayText.textContent = 'غشّاش 😅';
     result.classList.remove('hidden');
   } else if (step === 4) {
+    // لو قدر يضغط فهد (نادر)
     yayText.textContent = 'مستحيل 😂';
     result.classList.remove('hidden');
   }
@@ -321,6 +243,5 @@ noBtn.addEventListener('mouseenter', () => {
 });
 
 window.addEventListener('load', () => {
-  updateStartEnabled();
-  // stay on gate by default
+  setStep(1);
 });
