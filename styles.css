@@ -127,6 +127,12 @@ body{
   margin-bottom: 10px;
 }
 
+/* extra bold for the first result text */
+.yay-text.bold{
+  font-weight: 1000;
+  letter-spacing: 0.5px;
+}
+
 .yay-gif{
   width: 100%;
   height: auto;

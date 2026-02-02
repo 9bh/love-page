@@ -79,6 +79,7 @@ function setStep(n) {
   yesBtn.style.filter = '';
   noBtn.style.filter = '';
   result.classList.add('hidden');
+  yayText.classList.remove('bold');
 
   growScale = 1;
   yesBtn.style.transform = '';
@@ -163,9 +164,9 @@ function startCountdownThenNextStep(seconds, nextStep) {
 // --- Button actions ---
 yesBtn.addEventListener('click', () => {
   if (step === 1) {
-    // show result card (image for Q1)
-    yayText.textContent = 'YAY!';
-    if (yayImg) yayImg.src = 'assets/q1.jpg';
+    // show result card (Q1)
+    yayText.textContent = 'ادري';
+    yayText.classList.add('bold');
     result.classList.remove('hidden');
 
     // lock buttons briefly
@@ -180,12 +181,10 @@ yesBtn.addEventListener('click', () => {
   } else if (step === 2) {
     // In step 2, Yes is the escaping one, but if they somehow click it:
     yayText.textContent = 'ههههه لا';
-    if (yayImg) yayImg.src = 'assets/q2.jpg';
     result.classList.remove('hidden');
   } else if (step === 3) {
     // Ali => نروح للسؤال الرابع
-    yayText.textContent = 'اختيار ممتاز 😎';
-    if (yayImg) yayImg.src = 'assets/q3.jpg';
+    yayText.textContent = 'اللقمي حنين';
     result.classList.remove('hidden');
 
     yesBtn.disabled = true;
@@ -196,8 +195,7 @@ yesBtn.addEventListener('click', () => {
     }, 5000);
   } else if (step === 4) {
     // علي
-    yayText.textContent = 'صح عليك ✅';
-    if (yayImg) yayImg.src = 'assets/q4.jpg';
+    yayText.textContent = 'مستوى فهد';
     result.classList.remove('hidden');
     yesBtn.disabled = true;
     noBtn.disabled = true;
@@ -214,7 +212,6 @@ noBtn.addEventListener('click', () => {
   if (step === 2) {
     // اختار No => نروح للسؤال الثالث
     yayText.textContent = 'تمام ✅';
-    if (yayImg) yayImg.src = 'assets/q2.jpg';
     result.classList.remove('hidden');
 
     yesBtn.disabled = true;
@@ -226,12 +223,10 @@ noBtn.addEventListener('click', () => {
   } else if (step === 3) {
     // لو قدر يضغط حنين (نادر)
     yayText.textContent = 'غشّاش 😅';
-    if (yayImg) yayImg.src = 'assets/q3.jpg';
     result.classList.remove('hidden');
   } else if (step === 4) {
     // لو قدر يضغط فهد (نادر)
     yayText.textContent = 'مستحيل 😂';
-    if (yayImg) yayImg.src = 'assets/q4.jpg';
     result.classList.remove('hidden');
   }
 });
