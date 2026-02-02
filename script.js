@@ -4,7 +4,7 @@ const yesBtn = document.getElementById('yesBtn');
 const noBtn = document.getElementById('noBtn');
 const result = document.getElementById('result');
 const yayText = document.getElementById('yayText');
-const yayImg = document.getElementById('yayImg');
+const yayGif = document.getElementById('yayGif');
 const timer = document.getElementById('timer');
 const timerNum = document.getElementById('timerNum');
 
